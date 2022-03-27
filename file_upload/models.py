@@ -31,3 +31,8 @@ class File(models.Model):
             self.file_size = self.get_file_size()
 
         super(File, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.file:
+            self.file.delete()
+        super(File, self).delete(*args, **kwargs)
