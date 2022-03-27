@@ -27,7 +27,8 @@ class File(models.Model):
     def save(self, *args, **kwargs):
 
         if self.file:
-            self.file_name, self.file_type = os.path.splitext(self.file.name)
+            self.file_name = self.file.name
+            _, self.file_type = os.path.splitext(self.file.name)
             self.file_size = self.get_file_size()
 
         super(File, self).save(*args, **kwargs)
@@ -35,4 +36,5 @@ class File(models.Model):
     def delete(self, *args, **kwargs):
         if self.file:
             self.file.delete()
+
         super(File, self).delete(*args, **kwargs)
