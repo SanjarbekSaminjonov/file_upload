@@ -4,11 +4,20 @@ from django.db import models
 # Create your models here.
 
 
+class FileQuerySet(models.QuerySet):
+    def delete(self):
+        for obj in self:
+            os.remove(obj.file.path)
+        super().delete()
+
+
 class File(models.Model):
     file = models.FileField()
     file_name = models.CharField(max_length=255, blank=True)
     file_type = models.CharField(max_length=50, blank=True)
     file_size = models.CharField(max_length=50, blank=True)
+
+    objects = FileQuerySet.as_manager()
 
     def __str__(self):
         return self.file_name
