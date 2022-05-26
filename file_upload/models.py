@@ -1,10 +1,12 @@
 import os
 from django.db import models
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 
 
 class FileQuerySet(models.QuerySet):
+
     def delete(self):
         for obj in self:
             os.remove(obj.file.path)
@@ -12,6 +14,7 @@ class FileQuerySet(models.QuerySet):
 
 
 class File(models.Model):
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     file = models.FileField()
     file_name = models.CharField(max_length=255, blank=True)
     file_type = models.CharField(max_length=50, blank=True)
