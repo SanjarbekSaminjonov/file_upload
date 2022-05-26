@@ -4,7 +4,7 @@ from .views import FileViewSet
 
 
 router = DefaultRouter()
-router.register('files', FileViewSet, basename='file')
+router.register('', FileViewSet, basename='file')
 
 
 urlpatterns = [
