@@ -37,13 +37,20 @@ class File(models.Model):
         return str(value) + ext
 
     def save(self, *args, **kwargs):
-
+        old_image_path = str()
         if self.file:
             self.file_name = self.file.name
             _, self.file_type = os.path.splitext(self.file.name)
             self.file_size = self.get_file_size()
 
+            if self.pk:
+                old_file_obj = File.objects.get(pk=self.pk)
+                if old_file_obj.file != self.file:
+                    old_image_path = old_file_obj.file.path
+
         super(File, self).save(*args, **kwargs)
+        if old_image_path:
+            os.remove(old_image_path)
 
     def delete(self, *args, **kwargs):
         if self.file:
